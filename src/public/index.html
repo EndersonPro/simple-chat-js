@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Chat JS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+        crossorigin="anonymous">
+    <link href="css/main.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light bg-success">
+        <a href="/" class="navbar-brand mx-auto">SIMPLE CHAT JS</a>
+    </nav>
+
+    <div class="card col-md-4 mt-5 mx-auto" id="cont-username">
+        <div class="card-header">
+            <h3>Ingresa tu nombre de usuario</h3>
+        </div>
+        <p id="nickError"></p>
+        <div class="card-body">
+            <form id="nickForm">
+                <input type="text" placeholder="Nombre de Usuario" id="nickname" class="form-control">
+                <button type="submit" class="btn btn-success btn-block mt-2">
+                    <i class="fas fa-location-arrow"></i> Enviar
+                </button>
+            </form>
+        </div>
+    </div> 
+
+    <div class="container" id="contentChat">
+        <div class="row  mt-2">
+            <div class="col-md-9">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Chateamos? </h4>
+                        <span id="Escribiendo">.</span>
+                    </div>
+                    <div id="chat" class="card-body"></div>
+                    <form id="formulario-msj" class="card-footer">
+                        <div class="input-group">
+                            <input type="text" placeholder="Escribe un mensaje.." id="mensaje" class="form-control">
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-location-arrow"></i> Enviar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card col-md-3">
+                <div class="card-header">
+                    <h3>Usuarios Conectados</h3>
+                </div>
+                <div class="card-body">
+                    <div id="usernames"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/jquery-3.3.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
