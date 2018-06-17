@@ -27,6 +27,7 @@ module.exports = function (io) {
             io.sockets.emit('nuevo mensaje', {
                 mensaje: datos,
                 nick: socket.nickname
+                
             })
         });
 
