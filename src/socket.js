@@ -19,7 +19,7 @@ module.exports = function (io) {
 
         socket.on('escribiendo',function(user){
             console.log(user)
-            let Escribiendo = user + " Está escribiendo..."
+            let Escribiendo = user + " está escribiendo..."
             io.sockets.emit('userWriting', Escribiendo)
         })
 
