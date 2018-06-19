@@ -18,16 +18,15 @@ module.exports = function (io) {
         });
 
         socket.on('escribiendo',function(user){
-            console.log(user)
             let Escribiendo = user + " está escribiendo..."
-            io.sockets.emit('userWriting', Escribiendo)
+            socket.broadcast.emit('userWriting', Escribiendo)
         })
 
         socket.on('enviado', function (datos) {
-            io.sockets.emit('nuevo mensaje', {
+            socket.broadcast.emit('nuevo mensaje', {
                 mensaje: datos,
-                nick: socket.nickname
-                
+                nick: socket.nickname,
+                sound:true
             })
         });
 
