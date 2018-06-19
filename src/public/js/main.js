@@ -36,7 +36,7 @@ $(function(){
 
     $FormularioMensaje.on('submit', function(e){
         e.preventDefault();
-        socket.emit('enviado', $Mensaje.val())
+        socket.emit('enviado', $Mensaje.val().split('').filter(c => (c != '<') && (c != '>')).join(''))
         $Mensaje.val('')
     })
 
