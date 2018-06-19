@@ -4,7 +4,7 @@ $(function () {
 
     //Obteniendo los elementos del DOM desde la interfaz
     const $FormularioMensaje = $("#formulario-msj")
-    const $Mensaje = $("#mensaje")
+    var $Mensaje = $("#mensaje")
     const $Chat = $("#chat")
 
     //Username FORM
@@ -13,6 +13,8 @@ $(function () {
     const $Nickname = $("#nickname")
 
     const $Usuarios = $('#usernames')
+
+    var YouTubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
 
 
 
@@ -40,14 +42,27 @@ $(function () {
 
     $FormularioMensaje.on('submit', function (e) {
         e.preventDefault();
-        socket.emit('enviado', Texto($Mensaje.val()))
-        $Chat.append(`<div class="row">
-                        <div class="col-md-6"></div>
-                        <div class="col-md-6">
-                        <div class="alert alert-primary" role="alert">
-                            <span>${Texto($Mensaje.val())}</span></div>
-                        </div>
-                        </div>`)
+        if(YouTubeRegex.test($Mensaje.val())){
+            var match = $Mensaje.val().match(YouTubeRegex)
+            console.log(match)
+            socket.emit('enviado', $Mensaje.val())
+            $Chat.append(`<div class="row">
+                            <div class="col-md-6"></div>
+                            <div class="col-md-6">
+                            <div class="alert alert-primary" role="alert">
+                            <iframe src="https://www.youtube.com/embed/${match[5]}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                            </div>
+                            </div>`)
+        }else{
+            socket.emit('enviado', Texto($Mensaje.val()))
+            $Chat.append(`<div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+            <div class="alert alert-primary" role="alert">
+                <span>${Texto($Mensaje.val())}</span></div>
+            </div>
+            </div>`)
+        }
         $Mensaje.val('')
         $('#chat').animate({
             scrollTop: $('#chat').get(0).scrollHeight
