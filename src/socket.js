@@ -30,6 +30,14 @@ module.exports = function (io) {
             })
         });
 
+        socket.on('enviadoYouTube', function (datos) {
+            socket.broadcast.emit('nuevo mensaje urlYoutube', {
+                mensaje: datos,
+                nick: socket.nickname,
+                sound:true
+            })
+        });
+
         socket.on('disconnect', function(datos){
             if(!socket.nickname) return;
             nicknames.splice(nicknames.indexOf(socket.nickname), 1)

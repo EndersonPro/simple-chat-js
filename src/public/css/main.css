@@ -9,3 +9,6 @@ body{
 #Escribiendo{
     height: 20px !important;
 }
+.video{
+    overflow: hidden !important; display: flex !important; justify-content: center !important; align-items: center !important;
+}

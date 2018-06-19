@@ -44,15 +44,17 @@ $(function () {
         e.preventDefault();
         if(YouTubeRegex.test($Mensaje.val())){
             var match = $Mensaje.val().match(YouTubeRegex)
-            console.log(match)
-            socket.emit('enviado', $Mensaje.val())
-            $Chat.append(`<div class="row">
-                            <div class="col-md-6"></div>
-                            <div class="col-md-6">
-                            <div class="alert alert-primary" role="alert">
-                            <iframe src="https://www.youtube.com/embed/${match[5]}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                            </div>
-                            </div>`)
+
+            var htmlYoutube = `<div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-6">
+            <div class="video alert alert-primary" role="alert">
+            <iframe src="https://www.youtube.com/embed/${match[5]}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            </div>`
+
+            $Chat.append(htmlYoutube)
+            socket.emit('enviadoYouTube', match[5])
         }else{
             socket.emit('enviado', Texto($Mensaje.val()))
             $Chat.append(`<div class="row">
@@ -82,6 +84,22 @@ $(function () {
         </div>
         
         `)
+
+        $('#chat').animate({
+            scrollTop: $('#chat').get(0).scrollHeight
+        }, 500);
+    })
+    socket.on('nuevo mensaje urlYoutube', function (datos) {
+        if (datos.sound) { audio.play(); }
+        var htmlYoutube = `<div class="row">
+            <p><strong>${datos.nick}:</strong></p>
+            <div class="col-md-6">
+            <div class="video alert alert-primary" role="alert">
+            <iframe src="https://www.youtube.com/embed/${datos.mensaje}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>
+            <div class="col-md-6"></div>
+            </div>`
+        $Chat.append(htmlYoutube)
 
         $('#chat').animate({
             scrollTop: $('#chat').get(0).scrollHeight
