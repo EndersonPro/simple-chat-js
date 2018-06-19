@@ -34,14 +34,18 @@ $(function () {
         })
     })
 
+    function Texto(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     $FormularioMensaje.on('submit', function (e) {
         e.preventDefault();
-        socket.emit('enviado', $Mensaje.val().split('').filter(c => (c != '<') && (c != '>')).join(''))
+        socket.emit('enviado', Texto($Mensaje.val()))
         $Chat.append(`<div class="row">
                         <div class="col-md-6"></div>
                         <div class="col-md-6">
                         <div class="alert alert-primary" role="alert">
-                            <span>${$Mensaje.val().split('').filter(c => (c != '<') && (c != '>')).join('')}</span></div>
+                            <span>${Texto($Mensaje.val())}</span></div>
                         </div>
                         </div>`)
         $Mensaje.val('')
@@ -70,7 +74,7 @@ $(function () {
     })
 
     $Mensaje.on('keyup', function (e) {
-        if($(this).length > 0){
+        if ($(this).length > 0) {
             socket.emit('escribiendo', user, function (data) { })
         }
     })
@@ -78,6 +82,8 @@ $(function () {
     function clearEscribiendo() {
         $("#Escribiendo").html('.')
     }
+
+
 
     socket.on('userWriting', function (data) {
         $("#Escribiendo").html(data)
