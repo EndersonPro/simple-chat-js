@@ -1,5 +1,6 @@
-$(function(){
+$(function () {
     const socket = io();
+    var audio = new Audio('../sound/unconvinced.ogg');
 
     //Obteniendo los elementos del DOM desde la interfaz
     const $FormularioMensaje = $("#formulario-msj")
@@ -14,16 +15,16 @@ $(function(){
 
     const $Usuarios = $('#usernames')
 
-    
 
-    $nickForm.on('submit', function(e){
+
+    $nickForm.on('submit', function (e) {
         e.preventDefault()
         user = $Nickname.val()
-        socket.emit('nuevo usuario', $Nickname.val(), function(data){
-            if(data){
+        socket.emit('nuevo usuario', $Nickname.val(), function (data) {
+            if (data) {
                 $("#cont-username").hide()
                 $("#contentChat").show()
-            }else{
+            } else {
                 $Error.html(`
                     <div class="alert alert-danger">
                         El usuario ya existe!
@@ -34,36 +35,42 @@ $(function(){
         })
     })
 
-    $FormularioMensaje.on('submit', function(e){
+    $FormularioMensaje.on('submit', function (e) {
         e.preventDefault();
         socket.emit('enviado', $Mensaje.val().split('').filter(c => (c != '<') && (c != '>')).join(''))
         $Mensaje.val('')
     })
 
-    socket.on('nuevo mensaje',function(datos){
-        $Chat.append(`<b>${datos.nick}: </b> <span>${datos.mensaje}</span> <br>`)
+    socket.on('nuevo mensaje', function (datos) {
+        audio.play();
+        $Chat.append(`<div class="alert alert-success" role="alert">
+            <strong>${datos.nick}:</strong> <span>${datos.mensaje}</span></div>`)
+        $('#chat').animate({
+            scrollTop: $('#chat').get(0).scrollHeight
+        }, 500);
     })
 
-    $Mensaje.on('keyup',function(e){
-        console.log($Nickname.val())
-        socket.emit('escribiendo', user, function(data){})
+    $Mensaje.on('keyup', function (e) {
+        socket.emit('escribiendo', user, function (data) { })
     })
 
-    function clearEscribiendo(){
+    function clearEscribiendo() {
         $("#Escribiendo").html('.')
     }
 
-    socket.on('userWriting',function(data){
+    socket.on('userWriting', function (data) {
         $("#Escribiendo").html(data)
         setTimeout(clearEscribiendo, 3000);
     })
 
-    socket.on('usernames',function(datos){
+
+
+    socket.on('usernames', function (datos) {
         let html = ''
-        for(let i=0; i< datos.length;i++){
+        for (let i = 0; i < datos.length; i++) {
             html += `<p><i class="fas fa-user"></i> ${datos[i]}</p>`
         }
         $Usuarios.html(html)
     })
-    
+
 })
