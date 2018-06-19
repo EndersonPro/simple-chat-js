@@ -66,9 +66,7 @@ $(function () {
             </div>`)
         }
         $Mensaje.val('')
-        $('#chat').animate({
-            scrollTop: $('#chat').get(0).scrollHeight
-        }, 500);
+        $('#chat').scrollTop($('#chat').get(0).scrollHeight)
     })
 
     socket.on('nuevo mensaje', function (datos) {
@@ -85,9 +83,7 @@ $(function () {
         
         `)
 
-        $('#chat').animate({
-            scrollTop: $('#chat').get(0).scrollHeight
-        }, 500);
+        $('#chat').scrollTop($('#chat').get(0).scrollHeight)
     })
     socket.on('nuevo mensaje urlYoutube', function (datos) {
         if (datos.sound) { audio.play(); }
@@ -101,9 +97,7 @@ $(function () {
             </div>`
         $Chat.append(htmlYoutube)
 
-        $('#chat').animate({
-            scrollTop: $('#chat').get(0).scrollHeight
-        }, 500);
+        $('#chat').scrollTop($('#chat').get(0).scrollHeight);
     })
 
     $Mensaje.on('keyup', function (e) {
