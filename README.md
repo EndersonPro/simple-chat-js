@@ -6,4 +6,6 @@
 
 `npm i`
 
+`npm run dev`
+
 View console, starting on port `http://localhost:xxxx`
