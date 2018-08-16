@@ -14,24 +14,17 @@ $(function () {
 
     const $Usuarios = $('#usernames')
 
-    var YouTubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
+    /* Expresion regular para detectar enlaces de YouTube */
+    const YouTubeRegex = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/
 
 
-
-    $nickForm.on('submit', function (e) {
+    $nickForm.on('submit',  e => {
         e.preventDefault()
         user = $Nickname.val()
-        socket.emit('nuevo usuario', $Nickname.val(), function (data) {
-            if (data) {
-                $("#cont-username").hide()
-                $("#contentChat").show()
-            } else {
-                $Error.html(`
-                    <div class="alert alert-danger">
-                        El usuario ya existe!
-                    </div>
-                `)
-            }
+        socket.emit('nuevo usuario', $Nickname.val(),  data => {
+            
+            (data) ? ($("#cont-username").hide(), $("#contentChat").show()) : $Error.html(`<div class="alert alert-danger">El usuario ya existe! </div>`)
+
             $Nickname.val('')
         })
     })
@@ -43,15 +36,18 @@ $(function () {
     $FormularioMensaje.on('submit', function (e) {
         e.preventDefault();
         if(YouTubeRegex.test($Mensaje.val())){
+
+            /* Busca dentro de string una expresion regular */
             var match = $Mensaje.val().match(YouTubeRegex)
 
+            /* Armo la estructura basica para el mensaje del video en el chat */
             var htmlYoutube = `<div class="row">
-            <div class="col-md-6"></div>
-            <div class="col-md-6">
-            <div class="video alert alert-primary" role="alert">
-            <iframe src="https://www.youtube.com/embed/${match[5]}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-            </div>
-            </div>`
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                <div class="video alert alert-primary" role="alert">
+                                <iframe src="https://www.youtube.com/embed/${match[5]}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                                </div>
+                                </div>`
 
             $Chat.append(htmlYoutube)
             socket.emit('enviadoYouTube', match[5])
@@ -69,18 +65,16 @@ $(function () {
         $('#chat').scrollTop($('#chat').get(0).scrollHeight)
     })
 
-    socket.on('nuevo mensaje', function (datos) {
+    socket.on('nuevo mensaje', datos => {
         if (datos.sound) { audio.play(); }
         $Chat.append(`
-        
         <div class="row">
-        <div class="col-md-6">
-        <div class="alert alert-success" role="alert">
-            <strong>${datos.nick}:</strong> <span>${datos.mensaje}</span></div>
+            <div class="col-md-6">
+                <div class="alert alert-success" role="alert">
+                    <strong>${datos.nick}:</strong> <span>${datos.mensaje}</span></div>
+                </div>
+            <div class="col-md-6"></div>
         </div>
-        <div class="col-md-6"></div>
-        </div>
-        
         `)
 
         $('#chat').scrollTop($('#chat').get(0).scrollHeight)
@@ -106,7 +100,7 @@ $(function () {
         }
     })
 
-    function clearEscribiendo() {
+    function clearTyping() {
         $("#Escribiendo").html('.')
     }
 
@@ -114,7 +108,7 @@ $(function () {
 
     socket.on('userWriting', function (data) {
         $("#Escribiendo").html(data)
-        setTimeout(clearEscribiendo, 3000);
+        setTimeout(clearTyping, 3000);
     })
 
 

@@ -11,7 +11,9 @@ const io = socket.listen(server);
 //configurando puerto
 app.set('port', process.env.PORT || 3000);
 
+/* Requiero la funcion  */
 require('./socket')(io);
+
 
 // Enviado archivos estaticos al cliente
 app.use(express.static(path.join(__dirname,'public')));
