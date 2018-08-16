@@ -8,4 +8,4 @@
 
 `npm run dev`
 
-View console, starting on port `http://localhost:xxxx`
+View console, starting on port `http://localhost:3000`
